@@ -6,9 +6,9 @@ export interface ClouderaService {
 }
 
 export const clouderaServices: ClouderaService[] = [
-  {
+{
     id: "1",
-    name: "Cloudera Open Data Lakehouse powered by Apache Iceberg",
+    name: "Cloudera Open Data Lakehouse Powered by Apache Iceberg",
     description: "Unified analytics powered by Apache Iceberg with REST Catalog and Lakehouse Optimizer",
     category: "Data Lakehouse"
   },
@@ -26,8 +26,8 @@ export const clouderaServices: ClouderaService[] = [
   },
   {
     id: "4",
-    name: "Cloudera Data Services (AI) in your data center",
-    description: "Run AI securely in your data center with unified governance and compliance",
+    name: "Cloudera AI Everywhere for Data Anywhere",
+    description: "Safely use all data anywhere to build models and agents everywhere",
     category: "Private AI"
   },
   {
@@ -38,14 +38,14 @@ export const clouderaServices: ClouderaService[] = [
   },
   {
     id: "6",
-    name: "Shared Data Experience (SDX) for Enterprise security & Governance Anywhere",
+    name: "Shared Data Experience (SDX) for Enterprise Security & Governance Anywhere",
     description: "Cross-platform security, lineage, and Octopai-powered data governance",
     category: "Governance & Security"
   },
   {
     id: "7",
     name: "Cloudera AI Platform for GenAI and Machine Learning at Scale",
-    description: "Develop, deploy, and govern GenAI and ML at scale with Cloudera AI Inference service",
+    description: "Accelerate building and delivery of AI for growth, optimization, and security",
     category: "Accelerate Enterprise AI"
   },
   {
