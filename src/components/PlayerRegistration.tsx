@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, Building, Play } from 'lucide-react';
+import { User, Building, Play, PhoneCallIcon, PhoneIcon } from 'lucide-react';
 import { Player } from '../types/game';
 import { savePlayer, getPlayerByName } from '../utils/database';
 
@@ -10,7 +10,8 @@ interface PlayerRegistrationProps {
 export const PlayerRegistration: React.FC<PlayerRegistrationProps> = ({ onPlayerReady }) => {
   const [formData, setFormData] = useState({
     name: '',
-    company: ''
+    company: '',
+    phone: ''
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -28,6 +29,14 @@ export const PlayerRegistration: React.FC<PlayerRegistrationProps> = ({ onPlayer
       newErrors.company = 'Company is required';
     }
 
+    // Phone number validation (10 digits)
+    const phone = formData.phone ? formData.phone.replace(/\D/g, '') : '';
+    if (!phone) {
+      newErrors.phone = 'Phone number is required';
+    } else if (phone.length !== 10) {
+      newErrors.phone = 'Phone number must be exactly 10 digits';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -35,7 +44,7 @@ export const PlayerRegistration: React.FC<PlayerRegistrationProps> = ({ onPlayer
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!validateForm()) return;
+  if (!validateForm()) return;
 
     setIsLoading(true);
 
@@ -43,7 +52,8 @@ export const PlayerRegistration: React.FC<PlayerRegistrationProps> = ({ onPlayer
       // Save player to database
       const player = await savePlayer({
         name: formData.name.trim(),
-        company: formData.company.trim()
+        company: formData.company.trim(),
+        phone: formData.phone.trim()
       });
 
       onPlayerReady(player);
@@ -104,7 +114,7 @@ export const PlayerRegistration: React.FC<PlayerRegistrationProps> = ({ onPlayer
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
               <Building size={16} className="inline mr-2" />
-              Company
+              Company Name
             </label>
             <input
               type="text"
@@ -117,6 +127,26 @@ export const PlayerRegistration: React.FC<PlayerRegistrationProps> = ({ onPlayer
             />
             {errors.company && (
               <p className="text-red-500 text-sm mt-1">{errors.company}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-2">
+              <PhoneCallIcon size={16} className="inline mr-2" />
+              Phone Number (For Prize Notification)
+            </label>
+            <input
+              type="text"
+              value={formData.phone}
+              onChange={(e) => handleInputChange('phone', e.target.value)}
+              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                errors.phone ? 'border-red-500' : 'border-slate-300'
+              }`}
+              placeholder="Enter your phone number"
+            />
+            
+            {errors.phone && (
+              <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
             )}
           </div>
 

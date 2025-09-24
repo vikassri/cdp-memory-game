@@ -16,7 +16,8 @@ export const savePlayer = async (player: Omit<Player, 'id' | 'timestamp'>): Prom
       const { data, error } = await supabase
         .from('players')
         .update({
-          company: player.company
+          company: player.company,
+          phone: player.phone
         })
         .eq('id', existingPlayer.id)
         .select()
@@ -28,6 +29,7 @@ export const savePlayer = async (player: Omit<Player, 'id' | 'timestamp'>): Prom
         id: data.id,
         name: data.name,
         company: data.company,
+        phone: data.phone,
         timestamp: new Date(data.created_at).getTime()
       };
     } else {
@@ -36,7 +38,8 @@ export const savePlayer = async (player: Omit<Player, 'id' | 'timestamp'>): Prom
         .from('players')
         .insert({
           name: player.name,
-          company: player.company
+          company: player.company,
+          phone: player.phone
         })
         .select()
         .single();
@@ -47,6 +50,7 @@ export const savePlayer = async (player: Omit<Player, 'id' | 'timestamp'>): Prom
         id: data.id,
         name: data.name,
         company: data.company,
+        phone: data.phone,
         timestamp: new Date(data.created_at).getTime()
       };
     }
@@ -69,6 +73,7 @@ export const getPlayers = async (): Promise<Player[]> => {
       id: player.id,
       name: player.name,
       company: player.company,
+      phone: player.phone,
       timestamp: new Date(player.created_at).getTime()
     }));
   } catch (error) {
@@ -97,6 +102,7 @@ export const getPlayerByName = async (name: string): Promise<Player | null> => {
       id: data.id,
       name: data.name,
       company: data.company,
+      phone: data.phone,
       timestamp: new Date(data.created_at).getTime()
     };
   } catch (error) {
@@ -114,6 +120,7 @@ export const saveGameScore = async (gameScore: Omit<GameScore, 'id' | 'gameDate'
         player_id: gameScore.player.id,
         player_name: gameScore.player.name,
         player_company: gameScore.player.company,
+        player_phone: gameScore.player.phone,
         score: gameScore.score,
         tiles_revealed: gameScore.tilesRevealed,
         matched_pairs: gameScore.matchedPairs,
@@ -144,6 +151,7 @@ export const getGameScores = async (): Promise<GameScore[]> => {
         id: score.player_id,
         name: score.player_name,
         company: score.player_company,
+        phone: score.player_phone,
         timestamp: 0 // Not needed for display
       },
       score: score.score,
@@ -183,6 +191,7 @@ export const getCurrentSessionScores = async (): Promise<GameScore[]> => {
         id: score.player_id,
         name: score.player_name,
         company: score.player_company,
+        phone: score.player_phone,
         timestamp: 0
       },
       score: score.score,
@@ -226,6 +235,7 @@ export const getDailyScores = async (): Promise<GameScore[]> => {
         id: score.player_id,
         name: score.player_name,
         company: score.player_company,
+        phone: score.player_phone,
         timestamp: 0
       },
       score: score.score,
@@ -262,7 +272,7 @@ export const getLeaderboardStats = async () => {
       .from('game_scores')
       .select(`
         *,
-        players!inner(name, company, created_at)
+        players!inner(name, company, phone, created_at)
       `)
       .order('score', { ascending: false })
       .order('created_at', { ascending: false });

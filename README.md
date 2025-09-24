@@ -84,6 +84,7 @@ CREATE TABLE players (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   name text NOT NULL,
   company text NOT NULL,
+  phone text NOT NULL,
   created_at timestamptz DEFAULT now()
 );
 ```
@@ -95,6 +96,7 @@ CREATE TABLE game_scores (
   player_id uuid NOT NULL REFERENCES players(id),
   player_name text NOT NULL,
   player_company text NOT NULL,
+  player_phone text NOT NULL,
   score integer NOT NULL DEFAULT 0,
   tiles_revealed integer NOT NULL DEFAULT 0,
   matched_pairs integer NOT NULL DEFAULT 0,

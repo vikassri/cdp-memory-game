@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Trophy, Medal, Award, Clock, Target, User, Building, Download, Trash2 } from 'lucide-react';
+import { Trophy, Medal, Award, Clock, Target, User, Building, Download, Trash2, PhoneCallIcon } from 'lucide-react';
 import { GameScore } from '../types/game';
 import { getScoreRating, sortLeaderboard } from '../utils/scoring';
 import { getCurrentSessionScores, getDailyScores, clearCurrentSession } from '../utils/database';
@@ -11,6 +11,11 @@ interface LeaderboardProps {
 }
 
 export const Leaderboard: React.FC<LeaderboardProps> = ({ onClose }) => {
+  const [revealedPhones, setRevealedPhones] = useState<Record<string, boolean>>({});
+
+  const handleRevealPhone = (id: string) => {
+    setRevealedPhones(prev => ({ ...prev, [id]: !prev[id] }));
+  };
   const [sessionScores, setSessionScores] = useState<GameScore[]>([]);
   const [dailyScores, setDailyScores] = useState<GameScore[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -259,6 +264,30 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ onClose }) => {
                           <div className="flex items-center gap-2 text-sm text-slate-600">
                             <Building size={14} />
                             <span>{score.player.company}</span>
+                            <PhoneCallIcon size={14} />
+                            <span>
+                              {revealedPhones[score.id]
+                                ? score.player.phone
+                                : '••••••••••'}
+                            </span>
+                            <button
+                              type="button"
+                              className="ml-2 text-slate-400 hover:text-slate-700 focus:outline-none"
+                              onClick={() => handleRevealPhone(score.id)}
+                              aria-label={revealedPhones[score.id] ? 'Hide phone number' : 'Show phone number'}
+                            >
+                              {revealedPhones[score.id]
+                                ? (
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-4.477-10-10a9.96 9.96 0 012.175-6.125M15 12a3 3 0 11-6 0 3 3 0 016 0zm6.125-2.175A9.96 9.96 0 0122 9c0 5.523-4.477 10-10 10a10.05 10.05 0 01-1.825-.125M4.22 4.22l15.56 15.56" />
+                                    </svg>
+                                  )
+                                : (
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm2.25 2.25A9.96 9.96 0 0022 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 2.21.72 4.25 1.95 5.95M4.22 4.22l15.56 15.56" />
+                                    </svg>
+                                  )}
+                            </button>
                           </div>
                         </div>
                       </div>
