@@ -21,7 +21,7 @@ export const GameTile: React.FC<GameTileProps> = ({
   const getRandomColor = () => {
     const colors = [
       'from-blue-500 to-blue-600',
-      'from-orange-500 to-red-500',
+      'from-orange-600 to-purple-900',
     ];
     return colors[1];
   };
@@ -69,13 +69,13 @@ export const GameTile: React.FC<GameTileProps> = ({
           `}
         >
           <div className="text-center">
-            <div className="text-xs font-semibold mb-1 opacity-80 uppercase tracking-wide">
+            <div className="text-lg font-semibold mb-1 opacity-80 tracking-wide">
               {service.category}
             </div>
             {type === 'name' ? (
               <h3 className="text-sm font-bold leading-tight">{service.name}</h3>
             ) : (
-              <p className="text-xs leading-tight">{service.description}</p>
+              <p className="text-sm font-bold leading-tight">{service.description}</p>
             )}
           </div>
         </div>

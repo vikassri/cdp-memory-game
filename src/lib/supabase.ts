@@ -17,18 +17,21 @@ export type Database = {
           id: string
           name: string
           company: string
+          phone: string
           created_at: string
         }
         Insert: {
           id?: string
           name: string
           company: string
+          phone: string
           created_at?: string
         }
         Update: {
           id?: string
           name?: string
           company?: string
+          phone?: string
           created_at?: string
         }
       }
@@ -38,6 +41,7 @@ export type Database = {
           player_id: string
           player_name: string
           player_company: string
+          player_phone: string
           score: number
           tiles_revealed: number
           matched_pairs: number
@@ -50,6 +54,7 @@ export type Database = {
           player_id: string
           player_name: string
           player_company: string
+          player_phone: string
           score: number
           tiles_revealed: number
           matched_pairs: number
@@ -62,6 +67,7 @@ export type Database = {
           player_id?: string
           player_name?: string
           player_company?: string
+          player_phone?: string
           score?: number
           tiles_revealed?: number
           matched_pairs?: number

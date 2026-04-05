@@ -124,7 +124,7 @@ export class WinnerAnnouncementService {
     
     // Show browser notification if supported and permitted
     if ('Notification' in window && Notification.permission === 'granted') {
-      new Notification('Cloudera Memory Challenge Winner!', {
+      new Notification('Cloudera | Evolve25 New York | AI Bar Game Winner!', {
         body: message,
         icon: '/vite.svg',
         badge: '/vite.svg'

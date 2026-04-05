@@ -49,7 +49,7 @@ export const Credits: React.FC<CreditsProps> = ({ onClose }) => {
           <div className="bg-slate-50 rounded-lg p-4 text-center">
             <h4 className="font-semibold text-slate-700 mb-2">About This Game</h4>
             <p className="text-sm text-slate-600 leading-relaxed">
-              An interactive memory challenge featuring Cloudera's comprehensive data platform services. 
+              An interactive memory match-up featuring Cloudera's comprehensive data platform services. 
               Test your knowledge of big data technologies while having fun!
             </p>
           </div>

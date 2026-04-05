@@ -9,6 +9,26 @@ interface WinnerPopupProps {
 }
 
 export const WinnerPopup: React.FC<WinnerPopupProps> = ({ winners, onClose }) => {
+  // Phone number reveal logic for each winner
+  const [revealPhones, setRevealPhones] = React.useState<{[id: string]: boolean}>({});
+
+  function getPhoneDisplay(id: string, phone: string) {
+    return (
+      <span className="inline-flex items-center gap-1">
+        {revealPhones[id] ? phone : '••••••••••'}
+        <button
+          type="button"
+          className="ml-1 text-slate-400 hover:text-slate-700 focus:outline-none"
+          onClick={() => setRevealPhones(prev => ({ ...prev, [id]: !prev[id] }))}
+          aria-label={revealPhones[id] ? 'Hide phone number' : 'Show phone number'}
+        >
+          {revealPhones[id]
+            ? (<svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-4.477-10-10a9.96 9.96 0 012.175-6.125M15 12a3 3 0 11-6 0 3 3 0 016 0zm6.125-2.175A9.96 9.96 0 0122 9c0 5.523-4.477 10-10 10a10.05 10.05 0 01-1.825-.125M4.22 4.22l15.56 15.56" /></svg>)
+            : (<svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm2.25 2.25A9.96 9.96 0 0022 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 2.21.72 4.25 1.95 5.95M4.22 4.22l15.56 15.56" /></svg>)}
+        </button>
+      </span>
+    );
+  }
   const getRankIcon = (rank: number) => {
     switch (rank) {
       case 1: return <Trophy className="text-yellow-500" size={32} />;
@@ -50,9 +70,9 @@ export const WinnerPopup: React.FC<WinnerPopupProps> = ({ winners, onClose }) =>
                   key={winner.id}
                   className={`
                     p-6 rounded-xl border-2 text-center transform transition-all duration-300 hover:scale-105
-                    ${rank === 1 ? 'border-yellow-300 bg-gradient-to-br from-yellow-50 to-yellow-100 shadow-lg' : 
-                      rank === 2 ? 'border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100' :
-                      'border-amber-300 bg-gradient-to-br from-amber-50 to-amber-100'}
+                    ${rank === 1 ? 'border-orange-300 bg-gradient-to-br from-orange-500 to-orange-600 shadow-lg' : 
+                      rank === 2 ? 'border-gray-300 bg-gradient-to-br from-gray-50 to-gray-400' :
+                      'border-gray-300 bg-gradient-to-br from-gray-50 to-gray-200'}
                   `}
                 >
                   <div className="flex justify-center mb-3">
@@ -60,15 +80,18 @@ export const WinnerPopup: React.FC<WinnerPopupProps> = ({ winners, onClose }) =>
                   </div>
                   
                   <div className={`text-lg font-bold mb-1 ${
-                    rank === 1 ? 'text-yellow-700' :
+                    rank === 1 ? 'text-black-700' :
                     rank === 2 ? 'text-gray-700' :
-                    'text-amber-700'
+                    'text-gray-700'
                   }`}>
                     {rank === 1 ? '🥇 Champion' : rank === 2 ? '🥈 Runner-up' : '🥉 Third Place'}
                   </div>
                   
                   <h3 className="text-xl font-bold text-slate-800 mb-1">{winner.player.name}</h3>
                   <p className="text-sm text-slate-600 mb-3">{winner.player.company}</p>
+                  <div className="flex items-center justify-center gap-1 mb-2">
+                    {getPhoneDisplay(winner.id, winner.player.phone)}
+                  </div>
                   
                   <div className="text-3xl font-bold text-slate-800 mb-2">{winner.score}</div>
                   <div className={`text-sm font-medium ${rating.color} mb-3`}>{rating.rating}</div>

@@ -1,8 +1,8 @@
-# Cloudera Memory Challenge 🧠
+# Cloudera | Evolve25 New York | AI Bar Game 🧠
 
 A beautiful, interactive memory game featuring Cloudera's comprehensive data platform services. Test your knowledge of big data technologies while having fun!
 
-![Cloudera Memory Challenge](https://img.shields.io/badge/Game-Memory%20Challenge-blue?style=for-the-badge)
+![Cloudera | Evolve25 New York | AI Bar Game](https://img.shields.io/badge/Game-Memory%20Challenge-blue?style=for-the-badge)
 ![React](https://img.shields.io/badge/React-18.3.1-61DAFB?style=for-the-badge&logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.5.3-3178C6?style=for-the-badge&logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.4.1-38B2AC?style=for-the-badge&logo=tailwind-css)
@@ -14,7 +14,7 @@ A beautiful, interactive memory game featuring Cloudera's comprehensive data pla
 > **Note:** The leaderboard is now globally accessible! Your scores will be visible to all players worldwide.
 ## 🎯 Game Overview
 
-The Cloudera Memory Challenge is an engaging memory game where players match Cloudera service names with their descriptions. It's designed to help data professionals learn about Cloudera's ecosystem while having fun!
+The Cloudera | Evolve25 New York | AI Bar Game is an engaging memory game where players match Cloudera service names with their descriptions. It's designed to help data professionals learn about Cloudera's ecosystem while having fun!
 
 ### 🎲 Game Features
 
@@ -84,6 +84,7 @@ CREATE TABLE players (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   name text NOT NULL,
   company text NOT NULL,
+  phone text NOT NULL,
   created_at timestamptz DEFAULT now()
 );
 ```
@@ -95,6 +96,7 @@ CREATE TABLE game_scores (
   player_id uuid NOT NULL REFERENCES players(id),
   player_name text NOT NULL,
   player_company text NOT NULL,
+  player_phone text NOT NULL,
   score integer NOT NULL DEFAULT 0,
   tiles_revealed integer NOT NULL DEFAULT 0,
   matched_pairs integer NOT NULL DEFAULT 0,

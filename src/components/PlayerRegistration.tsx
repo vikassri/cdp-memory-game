@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, Building, Play } from 'lucide-react';
+import { User, Building, Play, PhoneCallIcon, PhoneIcon } from 'lucide-react';
 import { Player } from '../types/game';
 import { savePlayer, getPlayerByName } from '../utils/database';
 
@@ -10,7 +10,8 @@ interface PlayerRegistrationProps {
 export const PlayerRegistration: React.FC<PlayerRegistrationProps> = ({ onPlayerReady }) => {
   const [formData, setFormData] = useState({
     name: '',
-    company: ''
+    company: '',
+    phone: ''
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
@@ -28,6 +29,14 @@ export const PlayerRegistration: React.FC<PlayerRegistrationProps> = ({ onPlayer
       newErrors.company = 'Company is required';
     }
 
+    // Phone number validation (10 digits)
+    const phone = formData.phone ? formData.phone.replace(/\D/g, '') : '';
+    if (!phone) {
+      newErrors.phone = 'Phone number is required';
+    } else if (phone.length !== 10) {
+      newErrors.phone = 'Phone number must be exactly 10 digits';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -35,7 +44,7 @@ export const PlayerRegistration: React.FC<PlayerRegistrationProps> = ({ onPlayer
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!validateForm()) return;
+  if (!validateForm()) return;
 
     setIsLoading(true);
 
@@ -43,7 +52,8 @@ export const PlayerRegistration: React.FC<PlayerRegistrationProps> = ({ onPlayer
       // Save player to database
       const player = await savePlayer({
         name: formData.name.trim(),
-        company: formData.company.trim()
+        company: formData.company.trim(),
+        phone: formData.phone.trim()
       });
 
       onPlayerReady(player);
@@ -67,14 +77,17 @@ export const PlayerRegistration: React.FC<PlayerRegistrationProps> = ({ onPlayer
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Play className="text-white" size={24} />
-          </div>
+            <img 
+            src="evolve25.png" 
+            alt="EVOLVE25" 
+            className="h-10 object-contain mx-auto mb-4"
+          />
           <h1 className="text-2xl font-bold text-slate-800 mb-2">
-            Cloudera Memory Challenge
-          </h1>
+            Memory Match-up Game
+            </h1>
+          
           <p className="text-slate-600">
-            Enter your details to start the 90-Second challenge
+            Enter your details to start the 90-Second game
           </p>
         </div>
 
@@ -101,7 +114,7 @@ export const PlayerRegistration: React.FC<PlayerRegistrationProps> = ({ onPlayer
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
               <Building size={16} className="inline mr-2" />
-              Company
+              Company Name
             </label>
             <input
               type="text"
@@ -117,6 +130,26 @@ export const PlayerRegistration: React.FC<PlayerRegistrationProps> = ({ onPlayer
             )}
           </div>
 
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-2">
+              <PhoneCallIcon size={16} className="inline mr-2" />
+              Phone Number (For Prize Notification)
+            </label>
+            <input
+              type="text"
+              value={formData.phone}
+              onChange={(e) => handleInputChange('phone', e.target.value)}
+              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                errors.phone ? 'border-red-500' : 'border-slate-300'
+              }`}
+              placeholder="Enter your phone number"
+            />
+            
+            {errors.phone && (
+              <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+            )}
+          </div>
+
           {errors.general && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-3">
               <p className="text-red-600 text-sm">{errors.general}</p>
@@ -126,7 +159,7 @@ export const PlayerRegistration: React.FC<PlayerRegistrationProps> = ({ onPlayer
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-6 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-gradient-to-r from-orange-600 to-purple-600 text-white py-3 px-6 rounded-lg hover:from-orange-700 hover:to-purple-700 transition-all duration-200 font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? (
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -140,7 +173,7 @@ export const PlayerRegistration: React.FC<PlayerRegistrationProps> = ({ onPlayer
         </form>
 
         <div className="mt-6 text-center text-sm text-slate-500">
-          <p>🎯 Match service names with descriptions</p>
+          <p>🎯 Click tiles to reveal Cloudera Offering details</p>
           <p>⏱️ Complete within 90 seconds for bonus points</p>
           <p>🏆 Compete on the leaderboard</p>
         </div>
